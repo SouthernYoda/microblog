@@ -22,7 +22,7 @@ def before_request():
 def index():
 	form = PostForm()
 	if form.validate_on_submit():
-		post = Post(body=form.post.data, author=current_user)
+		post = Post(body=form.post.data, author=current_user, visibility=form.visibility.data)
 		db.session.add(post)
 		db.session.commit()
 		flash('Your post is now live!')
@@ -37,7 +37,6 @@ def index():
 	return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
 
 @bp.route('/explore')
-@login_required
 def explore():
 	page = request.args.get('page', 1, type=int)
 	posts = Post.query.order_by(Post.timestamp.desc()).paginate(
