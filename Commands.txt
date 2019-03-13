@@ -1,0 +1,208 @@
+#############################################################################
+# 				Development
+#############################################################################
+
+--project dir
+cd C:\Users\Adam\Documents\Projects\Python\Flask
+
+--set project environment thing
+set FLASK_APP=microblog.py
+flask run
+
+-- turn on web debug
+set FLASK_DEBUG=1
+
+#############################################################################
+# 				Github Commnads
+#############################################################################
+
+-- initialize local Git Repository
+git init
+
+-- add file to staging area
+git add <file>
+
+-- see what files in staging area
+git status
+
+-- commit changes to local repository
+git commit
+
+-- push to remote repo
+git push
+
+-- pull remote changes onto local repo
+git pull
+
+-- copy remote repository into local repo
+git clone
+#############################################################################
+# 				Background processes
+#############################################################################
+
+-- run powershell kali
+
+--declare flask enviornment variables
+
+-- navigate to Flask dir
+cd /mnt/c/Users/Adam/Documents/Projects/Python/Flask
+
+-- run redis
+rq worker microblog-tasks
+
+-- flask shell commands
+from redis import Redis
+import rq
+queue = rq.Queue('microblog-tasks', connection=Redis.from_url('redis://'))
+job = queue.enqueue('app.tasks.example', 23)
+
+#############################################################################
+# 				Elasticsearch
+#############################################################################
+
+-- start Elasticsearch cmd
+C:\Program Files\ElasticSearch\elasticsearch-6.6.1\bin\elasticsearch
+
+-- WebUI
+http://localhost:9200/
+
+-- cmd
+from elasticsearch import Elasticsearch
+es = Elasticsearch('http://localhost:9200')
+
+#############################################################################
+# 				Database
+#############################################################################
+
+--Initialize db for project
+flask db init
+
+-- create change script
+flask db migrate -m "[note on changes]"
+
+-- create tables
+flask db upgrade
+
+-- revert to previous db
+flask db downgrade
+
+--commands to set up terminal shell with db connection
+cmd: flask shell
+>>> db
+<SQLAlchemy engine=sqlite:////Users/migu7781/Documents/dev/flask/microblog2/app.db>
+>>> User
+<class 'app.models.User'>
+>>> Post
+<class 'app.models.Post'>
+
+#############################################################################
+# 				Email
+#############################################################################
+
+-- start email server
+python -m smtpd -n -c DebuggingServer localhost:8025
+
+- enviournment variables Dev
+set MAIL_SERVER=localhost
+set MAIL_PORT=8025
+
+-- real email setup for gmail
+set MAIL_SERVER=smtp.googlemail.com
+set MAIL_PORT=465
+set MAIL_USE_SSL=True
+set MAIL_USERNAME="fluffypumpkindev@gmail.com"
+set MAIL_PASSWORD="73UA3T9g94Yh@cdH7@eDCQx$5%q6t&"
+
+-- flask shell send email
+from flask_mail import Message; from app import mail
+msg = Message('test subject', sender=app.config['ADMINS'][0],recipients=['107yoda@gmail.com'])
+msg.body = 'text body'
+msg.html = '<h1>HTML body</h1>'
+mail.send(msg)
+
+#############################################################################
+# 				Language Translations
+#############################################################################
+
+--custome commands to add language
+flask translate init <LANG> to add a new language
+flask translate update to update all language repositories
+flask translate compile to compile all language repositories
+
+
+--generate pot to find all text that needs transpations
+-- pot file generates in current dir
+NOTE: run in dir FLASK where babel.cfg is
+pybabel extract -F babel.cfg -k _l -o messages.pot .
+
+--add second language support (es means spanish)
+pybabel init -i messages.pot -d app/translations -l es
+
+-- compile language translation
+pybabel compile -d app/translations
+
+#############################################################################
+#				Install flask
+#############################################################################
+
+pip install flask
+
+--install webform extention
+
+-- webforms
+pip install flask-wtf
+
+--for database objects
+pip install flask-sqlalchemy
+
+-- thing to manage db
+pip install flask-migrate
+
+-- Mysql connector
+pip install pymysql
+
+-- Managing user login state
+pip install flask-login
+
+-- email support
+pip install flask-mail
+
+-- json web tokens
+pip install pyjwt
+
+-- Time JS Library 
+pip install flask-moment
+
+-- bootstrap
+pip install flask-bootstrap
+
+-- multi language support
+pip install flask-babel
+
+-- elastic search Connector
+pip install elasticsearch
+
+-- install task queue support
+pip install rq
+
+sudo pip3 install flask-wtf, flask-migrate, flask-sqlalchemy, flask-migrate, pymysql, flask-login, flask-mail, pyjwt, flask-moment, flask-bootstrap, flask-babel
+
+
+	-- enable window subsystem
+	Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+	
+	-- run kali by opening powershell
+	kali
+	
+	-- update system
+	sudo apt-get update
+	sudo apt-get upgrade
+	
+	-- install redis
+	sudo apt-get install redis-server
+	redis-cli -v
+	
+	-- install python3-pip
+
+https://redislabs.com/blog/redis-on-windows-10/
+
