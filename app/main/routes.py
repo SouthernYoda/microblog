@@ -16,9 +16,16 @@ def before_request():
 		g.search_form = SearchForm()
 	g.locale = str(get_locale())
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/index', methods=['GET', 'POST'])
-@login_required
+@bp.route('/')
+@bp.route('/index')
+def explore():
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.filter_by(visibility='public').order_by(Post.timestamp.desc()).paginate(
+		page, current_app.config['POSTS_PER_PAGE'], False)
+	return render_template('index.html', title='Explore', posts=posts.items)
+
+
+@bp.route('/home', methods=['GET', 'POST'])
 def index():
 	form = PostForm()
 	if form.validate_on_submit():
@@ -36,12 +43,6 @@ def index():
 		if posts.has_prev else None
 	return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
 
-@bp.route('/explore')
-def explore():
-	page = request.args.get('page', 1, type=int)
-	posts = Post.query.order_by(Post.timestamp.desc()).paginate(
-		page, current_app.config['POSTS_PER_PAGE'], False)
-	return render_template('index.html', title='Explore', posts=posts.items)
 
 @bp.route('/login', methods=['GET', 'POST'])
 @login_required
