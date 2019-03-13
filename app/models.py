@@ -69,6 +69,7 @@ class User(UserMixin, db.Model):
 	posts = db.relationship('Post', backref='author', lazy='dynamic')
 	about_me = db.Column(db.String(140))
 	last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+	role = db.Column(db.String(5))
 	followed = db.relationship(
 		'User', secondary=followers,
 		primaryjoin=(followers.c.follower_id == id),
@@ -144,6 +145,8 @@ class User(UserMixin, db.Model):
 		
 	def get_task_in_progress(self, name):
 		return Task.query.filter_by(name=name, user=self, complete=False).first()
+	
+	
 	
 	@staticmethod
 	def verify_reset_password_token(token):
