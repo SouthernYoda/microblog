@@ -2,6 +2,7 @@ import jwt
 import json
 import redis
 import rq
+import uuid
 
 from datetime import datetime
 from time import time
@@ -178,6 +179,7 @@ class Post(SearchableMixin, db.Model):
 	visibility = db.Column(db.String(7))
 	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	url_mapping = db.Column(db.String(32))
 
 	def __repr__(self):
 		return '<Post {}>'.format(self.body)
@@ -187,6 +189,11 @@ class Post(SearchableMixin, db.Model):
 		for post in posts:
 			db.session.delete(post)
 
+	def add_mapping(self):
+		uuidlong = uuid.uuid4()
+		uuidshort = str(uuidlong.hex)
+		self.url_mapping = uuidshort[:6]
+		db.session.merge(self)
 
 class Message(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

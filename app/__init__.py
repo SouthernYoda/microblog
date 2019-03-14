@@ -1,6 +1,7 @@
 import os
 import logging
 import rq
+import uuid
 
 from elasticsearch import Elasticsearch
 from logging.handlers import RotatingFileHandler
@@ -28,7 +29,7 @@ babel = Babel()
 def create_app(config_class=Config):
 	app = Flask(__name__)
 	app.config.from_object(config_class)
-	
+
 	db.init_app(app)
 	migrate.init_app(app,db)
 	login.init_app(app)
@@ -42,19 +43,19 @@ def create_app(config_class=Config):
 
 	from app.auth import bp as auth_bp
 	app.register_blueprint(auth_bp, url_prefix='/auth')
-	
+
 	from app.admin import bp as admin_bp
 	app.register_blueprint(admin_bp, url_prefix='/admin')
-	
+
 	from app.main import bp as main_bp
 	app.register_blueprint(main_bp)
-	
+
 	app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
 		if app.config['ELASTICSEARCH_URL'] else None
-	
+
 	app.redis = Redis.from_url(app.config['REDIS_URL'])
 	app.task_queue = rq.Queue('microblog-tasks', connection=app.redis)
-	
+
 	if not app.debug:
 		if not os.path.exists('logs'):
 			os.mkdir('logs')
@@ -64,7 +65,7 @@ def create_app(config_class=Config):
 		app.logger.addHandler(file_handler)
 		app.logger.setLevel(logging.INFO)
 		app.logger.info('Microblog startup')
-		
+
 	return app
 
 @babel.localeselector
