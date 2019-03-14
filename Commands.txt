@@ -26,16 +26,20 @@ git add <file>
 git status
 
 -- commit changes to local repository
-git commit
+git commit <files or wildcard> -m "<message>"
+git commit * -m ""
 
 -- push to remote repo
-git push
+git push <remote> <branch>
+git push github Dev
 
 -- pull remote changes onto local repo
-git pull
+git pull <remote> <branch>
+git pull github Dev
 
--- copy remote repository into local repo
-git clone
+-- revert local changes
+git checkout <file>
+
 #############################################################################
 # 				Background processes
 #############################################################################
@@ -61,7 +65,7 @@ job = queue.enqueue('app.tasks.example', 23)
 #############################################################################
 
 -- start Elasticsearch cmd
-C:\Program Files\ElasticSearch\elasticsearch-6.6.1\bin\elasticsearch
+"C:\Program Files\ElasticSearch\elasticsearch-6.6.1\bin\elasticsearch"
 
 -- WebUI
 http://localhost:9200/
@@ -206,3 +210,7 @@ sudo pip3 install flask-wtf, flask-migrate, flask-sqlalchemy, flask-migrate, pym
 
 https://redislabs.com/blog/redis-on-windows-10/
 
+random stuff
+
+db actions
+https://goonan.io/flask-wtf-tricks/
