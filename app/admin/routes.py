@@ -4,8 +4,8 @@ from flask_wtf.csrf import CsrfProtect
 from flask_babel import _, get_locale
 from werkzeug.urls import url_parse
 
-from app import db		
-from app.admin import bp											  
+from app import db
+from app.admin import bp
 from app.models import User
 from app.admin.forms import EditProfileForm
 
@@ -13,8 +13,9 @@ from app.admin.forms import EditProfileForm
 @login_required
 def userList():
 	if current_user.is_admin(current_user):
+		form=EditProfileForm('','')
 		users = current_user.query.all()
-		return render_template('admin/userlist.html', users=users)
+		return render_template('admin/userlist.html', users=users, form=form)
 	return redirect(url_for('main.index'))
 
 @bp.route('/editUser/<int:id>', methods=['GET','POST'])
@@ -23,14 +24,19 @@ def editUser(id):
 	user = User.query.get(id)
 	form = EditProfileForm(user.username,user.email, obj=user)
 	if request.method == 'POST' and form.validate():
-		form.populate_obj(user)
-		db.session.add(user)
-		db.session.commit()
-		flash(id)
-		flash('Your changes have been saved.')
-		return redirect(url_for('admin.userList'))
+		if form.submit.data == 'Edit':
+			form.populate_obj(user)
+			db.session.add(user)
+			db.session.commit()
+			flash(id)
+			flash('Your changes have been saved.')
+			return redirect(url_for('admin.userList'))
+		elif form.submit.data == 'Delete':
+			flash('User Deleted')
+			return redirect(url_for('admin.userList'))
+	#If form has not been submited or failed form validattion
 	for error in form.username.errors:
 		flash(error)
 	for error in form.email.errors:
 		flash(error)
-	return redirect(url_for('admin.userList')) 
+	return redirect(url_for('admin.userList'))
