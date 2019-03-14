@@ -121,7 +121,7 @@ class User(UserMixin, db.Model):
 		return
 
 	def followed_posts(self):
-		followed = Post.query.join(
+		followed = Post.query.filter(Post.visibility != 'Private').join(
 			followers, (followers.c.followed_id == Post.user_id)).filter(
 				followers.c.follower_id == self.id)
 		own = Post.query.filter_by(user_id=self.id)
