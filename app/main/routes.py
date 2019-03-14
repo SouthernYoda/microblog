@@ -17,16 +17,16 @@ def before_request():
 	g.locale = str(get_locale())
 
 @bp.route('/')
-@bp.route('/index')
-def explore():
+@bp.route('/home')
+def home():
 	page = request.args.get('page', 1, type=int)
-	posts = Post.query.filter_by(visibility='public').order_by(Post.timestamp.desc()).paginate(
+	posts = Post.query.filter(Post.visibility != 'Private').order_by(Post.timestamp.desc()).paginate(
 		page, current_app.config['POSTS_PER_PAGE'], False)
 	return render_template('index.html', title='Explore', posts=posts.items)
 
-
-@bp.route('/home', methods=['GET', 'POST'])
-def index():
+@bp.route('/feed', methods=['GET', 'POST'])
+@login_required
+def feed():
 	form = PostForm()
 	if form.validate_on_submit():
 		post = Post(body=form.post.data, author=current_user, visibility=form.visibility.data)
@@ -34,22 +34,21 @@ def index():
 		db.session.add(post)
 		db.session.commit()
 		flash('Your post is now live!')
-		return redirect(url_for('main.index'))
+		return redirect(url_for('main.feed'))
 	page = request.args.get('page', 1, type=int)
 	posts = current_user.followed_posts().paginate(
 		page, current_app.config['POSTS_PER_PAGE'], False)
-	next_url = url_for('main.index', page=posts.next_num) \
+	next_url = url_for('main.feed', page=posts.next_num) \
 		if posts.has_next else None
-	prev_url = url_for('main.index', page=posts.prev_num) \
+	prev_url = url_for('main.feed', page=posts.prev_num) \
 		if posts.has_prev else None
 	return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
-
 
 @bp.route('/login', methods=['GET', 'POST'])
 @login_required
 def login():
 	if current_user.is_authenticated:
-		return redirect(url_for('main.index'))
+		return redirect(url_for('main.feed'))
 	form = LoginForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(username=form.username.data).first()
@@ -59,7 +58,7 @@ def login():
 		login_user(user, remember=form.remember_me.data)
 		next_page = request.args.get('next')
 		if not next_page or url_parse(next_page).netloc != '':
-			next_page = url_for('main.index')
+			next_page = url_for('main.feed')
 		return redirect(next_page)
 	return render_template('auth/login.html', title='Sign in', form=form)
 
@@ -111,7 +110,7 @@ def follow(username):
 	user = User.query.filter_by(username=username).first()
 	if user is None:
 		flash('User %(username)s not found.',username=username)
-		return redirect(url_for('main.index'))
+		return redirect(url_for('main.feed'))
 	if user == current_user:
 		flash('You cannot follow yourself!')
 		return redirect(url_for('main.user',username=username))
@@ -126,7 +125,7 @@ def unfollow(username):
 	user = User.query.filter_by(username=username).first()
 	if user is None:
 		flash('User %{username}s not found.',username=username)
-		return redirect(url_for('main.index'))
+		return redirect(url_for('main.feed'))
 	if user == current_user:
 		flash('You cannot unfollow yourself!')
 		return redirect(url_for('main.user', username=username))

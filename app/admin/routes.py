@@ -16,7 +16,7 @@ def userList():
 		form = EditProfileForm('','')
 		users = current_user.query.all()
 		return render_template('admin/userlist.html', users=users, form=form)
-	return redirect(url_for('main.index'))
+	return redirect(url_for('main.feed'))
 
 @bp.route('/editUser/<int:id>', methods=['GET','POST'])
 @login_required
