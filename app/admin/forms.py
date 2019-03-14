@@ -7,9 +7,8 @@ from app.models import User
 class EditProfileForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired()])
 	email = StringField('email', validators=[Email()])
-	role = RadioField('User Privilege', choices=[('Admin','Administrator'),('User','Standard User')])
-	edit = SubmitField(label='Edit')
-	delte = SubmitField(label='Delete')
+	role = RadioField('role', choices=[('Admin','Administrator'),('User','Standard User')])
+	#submit = SubmitField("action")
 
 	def __init__(self, original_username, original_email, *args, **kwargs):
 		super(EditProfileForm, self).__init__(*args,**kwargs)
