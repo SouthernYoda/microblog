@@ -1,36 +1,76 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, current_user, logout_user, login_required
-from flask_wtf.csrf import CsrfProtect
-from flask_babel import _, get_locale
+from flask_login import login_user, current_user, logout_user
 from werkzeug.urls import url_parse
-
+from flask_babel import _, get_locale
 from app import db		
-from app.admin import bp											  
+from app.auth import bp											  
 from app.models import User
-from app.admin.forms import EditProfileForm
+from app.auth.forms import ResetPasswordRequestForm, ResetPasswordForm, LoginForm, RegistrationForm
+from app.auth.email import send_password_reset_email
 
-@bp.route('/userlist')
-@login_required
-def userList():
-	if current_user.is_admin(current_user):
-		users = current_user.query.all()
-		return render_template('admin/userlist.html', users=users)
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+	if current_user.is_authenticated:
+		return redirect(url_for('main.index'))
+	form = LoginForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(username=form.username.data).first()
+		if user is None or not user.check_password(form.password.data):
+			flash('Invalid username or password')
+			return redirect(url_for('main.login'))
+		login_user(user, remember=form.remember_me.data)
+		next_page = request.args.get('next')
+		if not next_page or url_parse(next_page).netloc != '':
+			next_page = url_for('main.index')
+		return redirect(next_page)
+	return render_template('auth/login.html', title='Sign in', form=form)
+
+@bp.route('/logout')
+def logout():
+	logout_user()
 	return redirect(url_for('main.index'))
 
-@bp.route('/editUser/<int:id>', methods=['GET','POST'])
-@login_required
-def editUser(id):
-	user = User.query.get(id)
-	form = EditProfileForm(user.username,user.email, obj=user)
-	if request.method == 'POST' and form.validate():
-		form.populate_obj(user)
+@bp.route('/register', methods=['GET','POST'])
+def register():
+	if current_user.is_authenticated:
+		return redirect(url_for('main.index'))
+	form = RegistrationForm()
+	if form.validate_on_submit():
+		user = User(username=form.username.data, email=form.email.data, role='User')
+		user.set_password(form.password.data)
 		db.session.add(user)
 		db.session.commit()
-		flash(id)
-		flash('Your changes have been saved.')
-		return redirect(url_for('admin.userList'))
-	for error in form.username.errors:
-		flash(error)
-	for error in form.email.errors:
-		flash(error)
-	return redirect(url_for('admin.userList')) 
+		flash('Congratulations, you are now a registered user!')
+		return redirect(url_for('main.login'))
+	return render_template('auth/register.html', title='Register', form=form)
+	
+@bp.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+	if current_user.is_authenticated:
+		return redirect(url_for('main.index'))
+	form = ResetPasswordRequestForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		if user:
+			send_password_reset_email(user)
+			flash('email exists!')
+		flash('Check your email for the instructions to reset your password')
+		return redirect(url_for('main.login'))
+	return render_template('auth/reset_password_request.html', title='Reset Password', form=form)
+
+@bp.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+	if current_user.is_authenticated:
+		flash('you already authenticated')
+		return redirect(url_for('main.index'))
+	user = User.verify_reset_password_token(token)
+	if not user:
+		flash('token incorrect')
+		return redirect(url_for('main.index'))
+	form = ResetPasswordForm()
+	if form.validate_on_submit():
+		user.set_password(form.password.data)
+		db.session.commit()
+		flash('Your password has been reset.')
+		return redirect(url_for('auth.login'))
+	return render_template('auth/reset_password.html', form=form)
