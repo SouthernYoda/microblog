@@ -3,10 +3,10 @@ from flask_login import login_user, current_user, login_required
 from flask_babel import _, get_locale
 from datetime import datetime
 
-from app import db	
+from app import db
 from app.main import bp
 from app.models import User, Post, Message, Notification
-from app.main.forms import EditProfileForm, PostForm, SearchForm, MessageForm							  
+from app.main.forms import EditProfileForm, PostForm, SearchForm, MessageForm
 
 @bp.before_app_request
 def before_request():
@@ -30,6 +30,7 @@ def index():
 	form = PostForm()
 	if form.validate_on_submit():
 		post = Post(body=form.post.data, author=current_user, visibility=form.visibility.data)
+		post.add_mapping()
 		db.session.add(post)
 		db.session.commit()
 		flash('Your post is now live!')
@@ -133,7 +134,7 @@ def unfollow(username):
 	db.session.commit()
 	flash('You are not following %(username)s.', username=username)
 	return redirect(url_for('main.user', username=username))
-	
+
 @bp.route('/user/<username>/popup')
 @login_required
 def user_popup(username):
@@ -192,3 +193,9 @@ def export_posts():
 		current_user.launch_task('export_posts', 'Exporting posts...')
 		db.session.commit()
 	return redirect(url_for('main.user', username=current_user.username))
+
+@bp.route('/post/<post_mapping>')
+def post(post_mapping):
+	post = Post.query.filter_by(url_mapping=post_mapping).first_or_404()
+	user = User.query.filter_by(id=post.user_id).first()
+	return render_template('_post.html', post=post, username=user)
