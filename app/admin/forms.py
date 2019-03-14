@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, Length
 from app.models import User
+#Author:Adam
 
 class EditProfileForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired()])
