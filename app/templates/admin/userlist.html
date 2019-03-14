@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<table class="table table-hover">
+	{% for user in users %}
+		<form action="{{ url_for('admin.editUser',id=user.id) }}" method="post">
+			{{ form.hidden_tag() }}
+			<input type="hidden" name="id" id="id" value="{{ user.id }}" />
+			<tr>
+				<td width="70px">
+					<input type="textbox" id="username" name="username" value="{{ user.username }}">
+				<td>
+					<input type="textbox" id="email" name="email" value="{{ user.email }}">
+				</td>
+				<td>
+					 <select name="role" id="role" size="2">
+						{% if user.role == 'Admin' %}
+							<option value="Admin" selected>Admin</option>
+							<option value="User">Standard User</option>
+						{% else %}
+							<option value="Admin">Admin</option>
+							<option value="User" selected>Standard User</option>
+						{% endif %}
+					</select>
+				</td>
+				<td>
+					<input type="submit" name="action" value="edit">
+				</td>
+				<td>
+						<input type="submit" name="action" value="delete">
+				</td>
+			</tr>
+		</form>
+		{% endfor %}
+	</table>
+
+{% endblock %}
