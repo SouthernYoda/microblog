@@ -1,4 +1,4 @@
-Features of this microblog:<pre>
+Features of this microblog:<code>
 Administration
   a. The application has three tiers of users, Administrators, Users and Visitors (unauthenticated visitors
   to the site).
@@ -10,7 +10,7 @@ Administration
   f. Can login from a special administrator portal (not the default login portal that Users use).
   g. Can logout
   
-</pre>
+</code>
 
 
 Layout for the Fluffy Container Ship:
