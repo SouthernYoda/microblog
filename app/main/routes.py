@@ -182,19 +182,3 @@ def notifications():
 		'data': n.get_data(),
 		'timestamp': n.timestamp
 	} for n in notifications])
-
-@bp.route('/export_posts')
-@login_required
-def export_posts():
-	if current_user.get_task_in_progress('export_posts'):
-		flash('An export task is currently in progress')
-	else:
-		current_user.launch_task('export_posts', 'Exporting posts...')
-		db.session.commit()
-	return redirect(url_for('main.user', username=current_user.username))
-
-@bp.route('/post/<post_mapping>')
-def post(post_mapping):
-	post = Post.query.filter_by(url_mapping=post_mapping).first_or_404()
-	user = User.query.filter_by(id=post.user_id).first()
-	return render_template('_post.html', post=post, username=user)
