@@ -7,8 +7,9 @@
 
 Layout for the Fluffy Container Ship:
 <pre><code> 
+<p>
 app/
-  api/</p>
+  api/
     __init__.py
     auth.py
     errors.py
