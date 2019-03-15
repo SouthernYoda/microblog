@@ -25,12 +25,12 @@ def export_posts():
 		db.session.commit()
 	return redirect(url_for('main.user', username=current_user.username))
 
-@bp.route('/newpost')
+@bp.route('/newpost', methods=['GET','POST'])
 @login_required
 def newpost():
 		form = PostForm()
 		if form.validate_on_submit():
-			post = Post(body=form.post.data, author=current_user, visibility=form.visibility.data)
+			post = Post(title=form.title.data,body=form.body.data, author=current_user, visibility=form.visibility.data)
 			post.add_mapping()
 			db.session.add(post)
 			db.session.commit()
