@@ -5,7 +5,7 @@
 
 
 Layout for the Fluffy Container Ship:
-app/
+<p>app/</p>
   api/
     __init__.py
     auth.py
