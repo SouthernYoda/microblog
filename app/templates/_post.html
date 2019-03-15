@@ -1,3 +1,4 @@
+<a href="{{ url_for('post.post_mapping', post_mapping=post.url_mapping ) }}">
 <table class="table table-hover">
 	<tr>
 		<td width="70px">
@@ -11,12 +12,11 @@
 						{{ post.author.username }}
 					</a>
 				</span>
-			{% endset %} 
+			{% endset %}
 				{{ user_link }} said {{ moment(post.timestamp).fromNow() }}
 			<br>
-			<span id="post{{ post.id }}">
-				{{ post.body }}
-			</span>
+				{{ post.title }}
 		</td>
 	</tr>
 </table>
+</a>

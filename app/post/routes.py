@@ -10,7 +10,7 @@ from app.models import User, Post
 from app.post.forms import PostForm
 
 @bp.route('/view/<post_mapping>')
-def post(post_mapping):
+def post_mapping(post_mapping):
 	post = Post.query.filter_by(url_mapping=post_mapping).first_or_404()
 	user = User.query.filter_by(id=post.user_id).first()
 	return render_template('post/view_post.html', post=post, username=user)
