@@ -1,3 +1,18 @@
+Features of this microblog:<pre>
+Administration
+  a. The application has three tiers of users, Administrators, Users and Visitors (unauthenticated visitors
+  to the site).
+  b. All user tiers can list, search and view public Posts.
+  c. Administrators can list, search, create, edit, update, delete Users.
+  d. The administrator interface and functions should not be visible by Users or Visitors
+  e. Administrators can list, search, enable and disable Posts but cannot create, edit or otherwise modify a
+  Post.
+  f. Can login from a special administrator portal (not the default login portal that Users use).
+  g. Can logout
+  
+</pre>
+
+
 Layout for the Fluffy Container Ship:
 <pre><code>
 app/
