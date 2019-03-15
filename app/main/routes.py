@@ -6,7 +6,7 @@ from datetime import datetime
 from app import db
 from app.main import bp
 from app.models import User, Post, Message, Notification
-from app.main.forms import EditProfileForm, PostForm, SearchForm, MessageForm
+from app.main.forms import EditProfileForm, SearchForm, MessageForm
 
 @bp.before_app_request
 def before_request():
@@ -27,14 +27,6 @@ def home():
 @bp.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed():
-	form = PostForm()
-	if form.validate_on_submit():
-		post = Post(body=form.post.data, author=current_user, visibility=form.visibility.data)
-		post.add_mapping()
-		db.session.add(post)
-		db.session.commit()
-		flash('Your post is now live!')
-		return redirect(url_for('main.feed'))
 	page = request.args.get('page', 1, type=int)
 	posts = current_user.followed_posts().paginate(
 		page, current_app.config['POSTS_PER_PAGE'], False)
@@ -42,7 +34,7 @@ def feed():
 		if posts.has_next else None
 	prev_url = url_for('main.feed', page=posts.prev_num) \
 		if posts.has_prev else None
-	return render_template('index.html', title='Home', form=form, posts=posts.items, next_url=next_url, prev_url=prev_url)
+	return render_template('index.html', title='Home', posts=posts.items, next_url=next_url, prev_url=prev_url)
 
 @bp.route('/login', methods=['GET', 'POST'])
 @login_required
@@ -182,19 +174,3 @@ def notifications():
 		'data': n.get_data(),
 		'timestamp': n.timestamp
 	} for n in notifications])
-
-@bp.route('/export_posts')
-@login_required
-def export_posts():
-	if current_user.get_task_in_progress('export_posts'):
-		flash('An export task is currently in progress')
-	else:
-		current_user.launch_task('export_posts', 'Exporting posts...')
-		db.session.commit()
-	return redirect(url_for('main.user', username=current_user.username))
-
-@bp.route('/post/<post_mapping>')
-def post(post_mapping):
-	post = Post.query.filter_by(url_mapping=post_mapping).first_or_404()
-	user = User.query.filter_by(id=post.user_id).first()
-	return render_template('_post.html', post=post, username=user)

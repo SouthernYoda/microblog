@@ -19,7 +19,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="{{ url_for('main.feed') }}">Feed</a></li>
-        {% if current_user.is_authenticated %}
+        {%if current_user.is_authenticated %}
+          <li><a href="{{ url_for('post.newpost') }}">Create Post</a></li>
           {% if current_user.is_admin() %}
           <li><a href="{{ url_for('admin.userList')}}">Users</a></li>
           {% endif %}
@@ -128,10 +129,7 @@
     $('#message_count').css('visibility', n ? 'visible' : 'hidden');
   }
 
-  {
-    %
-    if current_user.is_authenticated %
-  }
+  {% if current_user.is_authenticated %}
   $(function() {
     var since = 0;
     setInterval(function() {
@@ -146,7 +144,7 @@
       );
     }, 10000);
   }); {
-    % endif %
+    {% endif %}
   }
 </script>
 {% endblock %}
