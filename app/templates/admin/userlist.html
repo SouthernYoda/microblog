@@ -3,19 +3,19 @@
 {% block app_content %}
 	<table class="table table-hover">
 	{% for user in users %}
-		<form action="{{ url_for('admin.editUser',id=user.id) }}" method="post">
+		<form action="{{ url_for('admin.editUser',id=user.id) }}" method="post" class="form-inline">
 			{{ form.hidden_tag() }}
 			<input type="hidden" name="id" id="id" value="{{ user.id }}" />
 			<tr>
 				<td width="70px">
-					<input type="textbox" id="username" name="username" value="{{ user.username }}">
+					<input type="textbox" id="username" name="username" value="{{ user.username }}" class="form-control" style="min-width: 100px; width: 45%;">
 				<td>
-					<input type="textbox" id="email" name="email" value="{{ user.email }}">
+					<input type="textbox" id="email" name="email" value="{{ user.email }}" class="form-control" >
 				</td>
 				<td>
-					 <select name="role" id="role" size="2">
+					 <select name="role" id="role" size="2" class="selectpicker" style="min-width: 120px; width: 70%;">
 						{% if user.role == 'Admin' %}
-							<option value="Admin" selected>Admin</option>
+							<option value="Admin" selected>Admin</option class="form-control" >
 							<option value="User">Standard User</option>
 						{% else %}
 							<option value="Admin">Admin</option>
@@ -24,10 +24,10 @@
 					</select>
 				</td>
 				<td>
-					<input type="submit" name="action" value="edit">
+					<input type="submit" name="action" value="edit" class="form-control" >
 				</td>
 				<td>
-						<input type="submit" name="action" value="delete">
+						<input type="submit" name="action" value="delete" class="btn btn-default">
 				</td>
 			</tr>
 		</form>

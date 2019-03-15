@@ -121,7 +121,7 @@ class User(UserMixin, db.Model):
 		return
 
 	def followed_posts(self):
-		followed = Post.query.join(
+		followed = Post.query.filter(Post.visibility != 'Private').join(
 			followers, (followers.c.followed_id == Post.user_id)).filter(
 				followers.c.follower_id == self.id)
 		own = Post.query.filter_by(user_id=self.id)
@@ -156,8 +156,6 @@ class User(UserMixin, db.Model):
 	def get_task_in_progress(self, name):
 		return Task.query.filter_by(name=name, user=self, complete=False).first()
 
-
-
 	@staticmethod
 	def verify_reset_password_token(token):
 		try:
@@ -175,11 +173,12 @@ class Post(SearchableMixin, db.Model):
 	__searchable__ = ['body']
 
 	id = db.Column(db.Integer, primary_key=True)
-	body = db.Column(db.String(140))
+	title = db.Column(db.String(20))
+	body = db.Column(db.Text(2000))
 	visibility = db.Column(db.String(7))
 	timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	url_mapping = db.Column(db.String(32))
+	url_mapping = db.Column(db.String(6))
 
 	def __repr__(self):
 		return '<Post {}>'.format(self.body)

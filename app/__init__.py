@@ -38,17 +38,20 @@ def create_app(config_class=Config):
 	moment.init_app(app)
 	babel.init_app(app)
 
+	from app.main import bp as main_bp
+	app.register_blueprint(main_bp)
+
 	from app.errors import bp as errors_bp
 	app.register_blueprint(errors_bp)
+
+	from app.post import bp as post_bp
+	app.register_blueprint(post_bp, url_prefix='/post')
 
 	from app.auth import bp as auth_bp
 	app.register_blueprint(auth_bp, url_prefix='/auth')
 
 	from app.admin import bp as admin_bp
 	app.register_blueprint(admin_bp, url_prefix='/admin')
-
-	from app.main import bp as main_bp
-	app.register_blueprint(main_bp)
 
 	app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
 		if app.config['ELASTICSEARCH_URL'] else None

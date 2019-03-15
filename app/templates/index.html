@@ -2,7 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-	{% if current_user.user %}
+	{% if current_user.is_authenticated %}
 		<h1>Hi, {{ current_user.username }}!</h1>
 	{% else %}
 		<h1>Hi, guest!</h1>
@@ -18,7 +18,7 @@
         <ul class="pager">
             <li class="previous{% if not prev_url %} disabled{% endif %}">
                 <a href="{{ prev_url or '#' }}">
-                    <span aria-hidden="true">&larr;</span> 
+                    <span aria-hidden="true">&larr;</span>
 					Newer posts
                 </a>
             </li>
