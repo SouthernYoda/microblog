@@ -1,13 +1,5 @@
-
-
-
-
-
-
-
 Layout for the Fluffy Container Ship:
-<pre><code> 
-<p>
+<pre><code>
 app/
   api/
     __init__.py
