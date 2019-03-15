@@ -6,19 +6,19 @@
 
 Layout for the Fluffy Container Ship:
 <p>app/
-  api/
-    __init__.py
-    auth.py
-    errors.py
-    tokens.py
-    users.py
-  auth/
-    __init__.py
-    email.py
-    forms.py
-    routes.py
-  errors/
-    __init__.py
+<p>  api/</p>
+<p>    __init__.py</p>
+<p>    auth.py</p>
+<p>    errors.py</p>
+<p>    tokens.py</p>
+<p>    users.py</p>
+<p>  auth/</p>
+<p>    __init__.py</p>
+<p>    email.py</p>
+<p>    forms.py</p>
+<p>    routes.py</p>
+<p>  errors/</p>
+<p>    __init__.py</p>
     handlers.py
   main/
     __init__.py
