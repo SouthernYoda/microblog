@@ -1,4 +1,17 @@
-
+<pre><code>app/
+    auth/                               &lt;-- blueprint package
+        __init__.py                     &lt;-- blueprint creation
+        email.py                        &lt;-- authentication emails
+        forms.py                        &lt;-- authentication forms
+        routes.py                       &lt;-- authentication routes
+    templates/
+        auth/                           &lt;-- blueprint templates
+            login.html
+            register.html
+            reset_password_request.html
+            reset_password.html
+    __init__.py                         &lt;-- blueprint registration
+</code></pre>
 
 
 
