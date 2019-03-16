@@ -1,3 +1,4 @@
+#This is the main form file that is rendered for the while blog
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, RadioField
