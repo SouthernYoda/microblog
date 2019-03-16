@@ -1,3 +1,8 @@
+<h1>Welcome to Microblog!</h1>
+<p>We created this microblog using Flask as out fromework and it is programmed in Python.</p>
+<p>The file "Commands.txt" has the commands to set up the enviroment and how to set variables and run the application</p>
+
+
 Features of this microblog based on assignment:<pre>
 
   1.    Administration
@@ -15,8 +20,6 @@ Features of this microblog based on assignment:<pre>
     b.    Users can also list, search and view private Posts which they have been invited to.
     c.    Can logout
     d.    Can edit, update and delete their account and profile
-    <strike>e.    Users can configure “watch” words and receive notifications in their account when a post is 
-    made by any user that matches their “watch” words.</strike>
   3.    Visitors
     a.    Can create a new User account
     b.    Can login
@@ -29,12 +32,12 @@ Features of this microblog based on assignment:<pre>
     raw post as a text file.
     d.    Posts have “short” URLs similar to the ones on the real Pastebin site. (Ex. 
     yourassignment.com/a8BjLp)
-    <strike>e.    User should be able to configure a post expiration date.</strike>
     f.     Posts can have titles.
     g.    The main/home page should display the 10 most recent posts.
     h.    Users should be able to upload text files as posts.
     i.     Users should be able to type posts into a text field on the post creation page.
 </pre>
+
 
 
 Layout for the Fluffy Container Ship:
@@ -92,4 +95,29 @@ app/
   tasks.py
   translate.py
   </code></pre>
+  
+  
+  <p>We forked this project from <a href="https://github.com/miguelgrinberg/microblog">miguelgrinberg/microblog</a> And in he says in his EULA: </p>
+  <pre>
+  The MIT License (MIT)
+
+Copyright (c) 2017 Miguel Grinberg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  </pre>
   
