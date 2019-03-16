@@ -1,3 +1,4 @@
+#Master routes page
 from flask import render_template, redirect, url_for, flash, request, current_app, g, jsonify
 from flask_login import login_user, current_user, login_required
 from flask_babel import _, get_locale
