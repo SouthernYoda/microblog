@@ -1,3 +1,5 @@
+#this is where all the forms live and get processed for a lack of better word
+#The code is pretty self explanitory
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
