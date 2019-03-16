@@ -1,3 +1,6 @@
+#urls and url mappings to make them actually redired somewhere
+#this also has the shortened version url_for()
+#this is so we can have url_for('login') rather than typing in the whole URL
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, logout_user
 from werkzeug.urls import url_parse
