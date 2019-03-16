@@ -1,3 +1,4 @@
+#File for Email configuration
 from threading import Thread
 from flask import render_template, current_app
 from flask_babel import _
