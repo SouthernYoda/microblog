@@ -1,3 +1,5 @@
+#This file is similar to the routes.py except
+#This file renders the html rather than redirecing
 from flask import render_template
 from app import db
 from app.errors import bp
