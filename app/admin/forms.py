@@ -1,3 +1,4 @@
+#This is for the "Admin changes" that a user may need to do like edit profile and similar things
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, Length
